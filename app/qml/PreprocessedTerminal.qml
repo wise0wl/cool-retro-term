@@ -93,16 +93,16 @@ Item{
 
         property int textureResolutionScale: appSettings.lowResolutionFont ? Screen.devicePixelRatio : 1
         property int margin: appSettings.margin / screenScaling
-        property int totalWidth: Math.floor(parent.width / (screenScaling * fontWidth))
-        property int totalHeight: Math.floor(parent.height / screenScaling)
+        property int totalWidth: Math.max(1, Math.floor(parent.width / (screenScaling * fontWidth)))
+        property int totalHeight: Math.max(1, Math.floor(parent.height / screenScaling))
 
-        property int rawWidth: totalWidth - 2 * margin
-        property int rawHeight: totalHeight - 2 * margin
+        property int rawWidth: Math.max(1, totalWidth - 2 * margin)
+        property int rawHeight: Math.max(1, totalHeight - 2 * margin)
 
         textureSize: Qt.size(width / textureResolutionScale, height / textureResolutionScale)
 
-        width: ensureMultiple(rawWidth, Screen.devicePixelRatio)
-        height: ensureMultiple(rawHeight, Screen.devicePixelRatio)
+        width: Math.max(1, ensureMultiple(rawWidth, Screen.devicePixelRatio))
+        height: Math.max(1, ensureMultiple(rawHeight, Screen.devicePixelRatio))
 
         /** Ensure size is a multiple of factor. This is needed for pixel perfect scaling on highdpi screens. */
         function ensureMultiple(size, factor) {
@@ -267,8 +267,11 @@ Item{
         hideSource: true
         wrapMode: ShaderEffectSource.Repeat
         visible: false
-        textureSize: Qt.size(kterminal.totalWidth * scaleTexture, kterminal.totalHeight * scaleTexture)
-        sourceRect: Qt.rect(-kterminal.margin, -kterminal.margin, kterminal.totalWidth, kterminal.totalHeight)
+        textureSize: Qt.size(Math.max(1, kterminal.totalWidth * scaleTexture),
+                             Math.max(1, kterminal.totalHeight * scaleTexture))
+        sourceRect: Qt.rect(-kterminal.margin, -kterminal.margin,
+                            Math.max(1, kterminal.totalWidth),
+                            Math.max(1, kterminal.totalHeight))
     }
 
     Item {
