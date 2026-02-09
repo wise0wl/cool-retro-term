@@ -146,6 +146,14 @@ ColumnLayout {
             SizedLabel {
                 text: Math.round(burnInSlider.value * 100) + "%"
             }
+
+            CheckBox {
+                Layout.columnSpan: 4
+                text: qsTr("Prefer accelerated font rendering")
+                visible: appSettings.isLinux
+                checked: appSettings.preferAcceleratedFontRendering
+                onCheckedChanged: appSettings.preferAcceleratedFontRendering = checked
+            }
         }
     }
 }

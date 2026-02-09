@@ -38,6 +38,7 @@ QtObject {
     readonly property real maxBurnInFadeTime: 1.6
 
     property bool isMacOS: Qt.platform.os === "osx"
+    property bool isLinux: Qt.platform.os === "linux"
 
     // GENERAL SETTINGS ///////////////////////////////////////////////////////
     property bool showMenubar: false
@@ -52,6 +53,7 @@ QtObject {
     property real burnInQuality: 0.5
 
     property bool blinkingCursor: false
+    property bool preferAcceleratedFontRendering: false
 
 
     // PROFILE SETTINGS ///////////////////////////////////////////////////////
@@ -167,7 +169,8 @@ QtObject {
             "bloomQuality": bloomQuality,
             "burnInQuality": burnInQuality,
             "useCustomCommand": useCustomCommand,
-            "customCommand": customCommand
+            "customCommand": customCommand,
+            "preferAcceleratedFontRendering": preferAcceleratedFontRendering
         }
         return stringify(settings)
     }
@@ -260,6 +263,8 @@ QtObject {
                 !== undefined ? settings.useCustomCommand : useCustomCommand
         customCommand = settings.customCommand
                 !== undefined ? settings.customCommand : customCommand
+        preferAcceleratedFontRendering = settings.preferAcceleratedFontRendering
+                !== undefined ? settings.preferAcceleratedFontRendering : preferAcceleratedFontRendering
     }
 
     function loadProfileString(profileString) {

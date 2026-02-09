@@ -111,6 +111,7 @@ Item{
 
         fullCursorHeight: true
         blinkingCursor: appSettings.blinkingCursor
+        useFBORendering: appSettings.preferAcceleratedFontRendering
 
         colorScheme: "cool-retro-term"
 
