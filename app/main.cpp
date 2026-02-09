@@ -8,6 +8,7 @@
 #include <QIcon>
 #include <QQuickStyle>
 #include <QtQml/qqml.h>
+#include <QQuickWindow>
 
 #include <kdsingleapplication.h>
 
@@ -44,9 +45,10 @@ int main(int argc, char *argv[])
     QLoggingCategory::setFilterRules("qt.qml.connections.warning=false");
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Round);
 
-// #if defined (Q_OS_LINUX)
-//     setenv("QSG_RENDER_LOOP", "threaded", 0);
-// #endif
+// Set render loop to basic for debug/test builds.
+#if defined (Q_OS_LINUX)
+    setenv("QSG_RENDER_LOOP", "basic", 0);
+#endif
 
 #if defined(Q_OS_MAC)
     // This allows UTF-8 characters usage in OSX.
@@ -87,6 +89,12 @@ int main(int argc, char *argv[])
     app.setOrganizationName(QStringLiteral("cool-retro-term"));
     app.setOrganizationDomain(QStringLiteral("cool-retro-term"));
     app.setApplicationVersion(appVersion);
+
+    qInfo() << "cool-retro-term version" << appVersion;
+    qInfo() << "Qt version" << QT_VERSION_STR;
+    qInfo() << "Platform" << QGuiApplication::platformName();
+    qInfo() << "QSG_RENDER_LOOP" << qgetenv("QSG_RENDER_LOOP");
+    qInfo() << "QQuickWindow graphicsApi" << QQuickWindow::graphicsApi();
 
     KDSingleApplication singleApp(QStringLiteral("cool-retro-term"));
 
