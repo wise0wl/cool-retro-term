@@ -219,4 +219,106 @@ ColumnLayout {
             }
         }
     }
+    GroupBox {
+        title: qsTr("Baud Rate")
+        Layout.fillWidth: true
+        Layout.fillHeight: false
+        padding: appSettings.defaultMargin
+        ColumnLayout {
+            anchors.fill: parent
+            RowLayout {
+                Layout.fillWidth: true
+                Label {
+                    text: qsTr("Rate (bps)")
+                }
+                ComboBox {
+                    id: baudRateCombo
+                    Layout.fillWidth: true
+                    model: ["Off", "300", "1200", "2400", "4800", "9600", "19200", "38400", "Custom"]
+                    currentIndex: {
+                        switch(appSettings.baudRate) {
+                            case 0: return 0
+                            case 300: return 1
+                            case 1200: return 2
+                            case 2400: return 3
+                            case 4800: return 4
+                            case 9600: return 5
+                            case 19200: return 6
+                            case 38400: return 7
+                            default: return 8
+                        }
+                    }
+                    onActivated: {
+                        switch(currentIndex) {
+                            case 0: appSettings.baudRate = 0; break
+                            case 1: appSettings.baudRate = 300; break
+                            case 2: appSettings.baudRate = 1200; break
+                            case 3: appSettings.baudRate = 2400; break
+                            case 4: appSettings.baudRate = 4800; break
+                            case 5: appSettings.baudRate = 9600; break
+                            case 6: appSettings.baudRate = 19200; break
+                            case 7: appSettings.baudRate = 38400; break
+                            case 8: break // Custom - use text field
+                        }
+                    }
+                }
+                TextField {
+                    visible: baudRateCombo.currentIndex === 8
+                    placeholderText: "3000"
+                    Layout.preferredWidth: 80
+                    onTextChanged: {
+                        var val = parseInt(text)
+                        if (!isNaN(val) && val > 0) {
+                            appSettings.baudRate = val
+                        }
+                    }
+                    Component.onCompleted: {
+                        text = appSettings.baudRate.toString()
+                    }
+                    Connections {
+                        target: appSettings
+                        onBaudRateChanged: {
+                            if (baudRateCombo.currentIndex === 8 && text !== appSettings.baudRate.toString()) {
+                                text = appSettings.baudRate.toString()
+                            }
+                        }
+                    }
+                }
+            }
+            ColumnLayout {
+                Layout.fillWidth: true
+                Label {
+                    text: qsTr("Mode")
+                    font.bold: true
+                }
+                RadioButton {
+                    text: qsTr("Off - No delay")
+                    checked: appSettings.baudRateMode === "off"
+                    onClicked: appSettings.baudRateMode = "off"
+                }
+                RadioButton {
+                    text: qsTr("Visual Only - Display (text appears slowly)")
+                    checked: appSettings.baudRateMode === "display-aesthetic"
+                    onClicked: appSettings.baudRateMode = "display-aesthetic"
+                }
+                RadioButton {
+                    text: qsTr("Visual Only - Input (typing echoed slowly)")
+                    checked: appSettings.baudRateMode === "input-aesthetic"
+                    onClicked: appSettings.baudRateMode = "input-aesthetic"
+                }
+                RadioButton {
+                    text: qsTr("Visual Only - Both (display and input delayed)")
+                    checked: appSettings.baudRateMode === "both-aesthetic"
+                    onClicked: appSettings.baudRateMode = "both-aesthetic"
+                }
+            }
+            Label {
+                text: qsTr("Visual Only modes create display delays without affecting actual I/O responsiveness. Authentic PTY modes (coming soon) would throttle actual keystroke registration and data rates.")
+                wrapMode: Text.WordWrap
+                font.pixelSize: 10
+                color: "#888888"
+                Layout.fillWidth: true
+            }
+        }
+    }
 }
