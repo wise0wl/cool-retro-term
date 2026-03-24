@@ -315,7 +315,6 @@ QtObject {
 
         blinkingCursor = settings.blinkingCursor !== undefined ? settings.blinkingCursor : blinkingCursor
 
-        // Load baud rate settings
         baudRate = settings.baudRate !== undefined ? settings.baudRate : baudRate
         baudRateMode = settings.baudRateMode !== undefined ? settings.baudRateMode : baudRateMode
     }

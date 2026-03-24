@@ -24,11 +24,18 @@ import QtQml 2.0
 
 import "Components"
 
-ColumnLayout {
-    GroupBox {
-        title: qsTr("Font")
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+ScrollView {
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+    contentWidth: availableWidth
+    clip: true
+
+    ColumnLayout {
+        width: parent.width
+
+        GroupBox {
+            title: qsTr("Font")
+            Layout.fillWidth: true
         padding: appSettings.defaultMargin
         GridLayout {
             anchors.fill: parent
@@ -172,10 +179,9 @@ ColumnLayout {
             }
         }
     }
-    GroupBox {
-        title: qsTr("Colors")
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+        GroupBox {
+            title: qsTr("Colors")
+            Layout.fillWidth: true
         padding: appSettings.defaultMargin
         ColumnLayout {
             anchors.fill: parent
@@ -219,10 +225,9 @@ ColumnLayout {
             }
         }
     }
-    GroupBox {
-        title: qsTr("Baud Rate")
-        Layout.fillWidth: true
-        Layout.fillHeight: false
+        GroupBox {
+            title: qsTr("Baud Rate")
+            Layout.fillWidth: true
         padding: appSettings.defaultMargin
         ColumnLayout {
             anchors.fill: parent
@@ -297,28 +302,29 @@ ColumnLayout {
                     onClicked: appSettings.baudRateMode = "off"
                 }
                 RadioButton {
-                    text: qsTr("Visual Only - Display (text appears slowly)")
+                    text: qsTr("Display (text appears slowly)")
                     checked: appSettings.baudRateMode === "display-aesthetic"
                     onClicked: appSettings.baudRateMode = "display-aesthetic"
                 }
                 RadioButton {
-                    text: qsTr("Visual Only - Input (typing echoed slowly)")
+                    text: qsTr("Input (typing echoed slowly)")
                     checked: appSettings.baudRateMode === "input-aesthetic"
                     onClicked: appSettings.baudRateMode = "input-aesthetic"
                 }
                 RadioButton {
-                    text: qsTr("Visual Only - Both (display and input delayed)")
+                    text: qsTr("Both (display and input delayed)")
                     checked: appSettings.baudRateMode === "both-aesthetic"
                     onClicked: appSettings.baudRateMode = "both-aesthetic"
                 }
             }
             Label {
-                text: qsTr("Visual Only modes create display delays without affecting actual I/O responsiveness. Authentic PTY modes (coming soon) would throttle actual keystroke registration and data rates.")
+                text: qsTr("Aesthetic baud-rate limits create display delays without affecting actual I/O responsiveness. This is not an authentic PTY mode, which would throttle actual keystroke registration and data rates.")
                 wrapMode: Text.WordWrap
                 font.pixelSize: 10
                 color: "#888888"
                 Layout.fillWidth: true
             }
+        }
         }
     }
 }
